@@ -6,21 +6,21 @@ public class Conta {
     private String numeroAgencia;
     private double saldo;
 
-    public Conta() {
-        this("", "", "", 0.0);
-    }
     public Conta(String cpf, String numC, String numAg, double saldo) {
         this.cpfTitular = cpf;
         this.numeroConta = numC;
         this.numeroAgencia = numAg;
         this.saldo = saldo;
     }
+    public Conta() {
+        this("", "", "", 0.0);
+    }
     //get
     public String getCpfTitular() {
         return this.cpfTitular;
     }
     public String getNumeroConta() {
-        return this.cpfTitular;
+        return this.numeroConta;
     }
     public String getNumeroAgencia() {
         return this.numeroAgencia;
@@ -44,13 +44,16 @@ public class Conta {
     //TO-DO
     //toString
     public String toString() {
-        String mensagem = String.format("A conta com o CPF:%s, e com o numero da conta:%s; agencia:%s ; o saldo é:%d",
-                this.cpfTitular, this.numeroConta, this.numeroAgencia, this.saldo);
+        String mensagem = String.format("Conta número %s do cliente de CPF %s",
+                this.numeroConta, this.cpfTitular);
         return mensagem;
     }
-    public void creditar(double credito) {
+    public double creditar(double credito) {
         this.saldo += credito;
-    }public void debitar(double debito) {
-        this.saldo = saldo - debito;
+        return this.saldo;
+    }
+    public double debitar(double debito) {
+        this.saldo -= debito;
+        return this.saldo;
     }
 }

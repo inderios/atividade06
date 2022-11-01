@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class BancoList {
     private String nome;
     private String cnpj;
-    private ArrayList<Conta> contas;
+    public ArrayList<Conta> contas;
 
     public BancoList (String nome, String cnpj, ArrayList<Conta> contas) {
         this.nome = nome;
@@ -14,18 +14,17 @@ public class BancoList {
         String mensagem = String.format("Banco %s, de CNPJ: %s, e que tem %d contas.",
                 this.nome, this.cnpj, this.contas.size());
         return mensagem;
-    }
+    }//funciona
     //exemplo de como fazer o programa
-    public double consultarSaldoDeConta(String numConta, String numAgencia) {
-        double saldo = 0;
-        for (Conta c : this.contas) {
-            if (c.getNumeroConta().equals(numConta) && c.getNumeroAgencia().equals(numAgencia)) {
-                saldo = c.getSaldo();
-                break;
+    public double consultarSaldoDeConta(String conta, String agencia) {
+        for (Conta c : contas) {
+            System.out.println("Oi, tá entrando");
+            if (c.getNumeroConta().equals(conta) && c.getNumeroAgencia().equals(agencia)) {
+                 return c.getSaldo();
             }
         }
-        return saldo;
-    }
+        return 0;
+    }//funciona
     //to-do
     public void transferir(String numConta0, String numAg0, String numContaD, String numAgD, double valor) {
         //transferir dinheiro de uma conta para outra
@@ -39,31 +38,35 @@ public class BancoList {
             if(conta.equals(numContaD) && agencia.equals(numAgD))
                 contaD = cliente;
         }
-        conta0.setSaldo(conta0.getSaldo() - valor);
-        contaD.setSaldo(contaD.getSaldo() + valor);
-    }
+        if(conta0 != null && contaD != null) {
+            conta0.debitar(valor);
+            contaD.creditar(valor);
+        }else{
+            //tratamento de erro, faz isso depois
+        }
+    }//funciona
     public void abrirConta(String cfpTitular, String numConta, String numAgencia, double saldoInicial) {
-        Conta usuario = new Conta(cfpTitular, numConta, numAgencia, saldoInicial);
-        contas.add(usuario);
-    }
+        Conta novaConta = new Conta(cfpTitular, numConta, numAgencia, saldoInicial);
+        contas.add(novaConta);
+    }//funciona
     public ArrayList<Conta> pesquisarContasComSaldoNegativo() {
         ArrayList<Conta> contasNegativas = new ArrayList<Conta>();
         for (Conta c: contas) {
             if (c.getSaldo() < 0) {
+                System.out.println(c.getNumeroConta());
                 contasNegativas.add(c);
             }
         }
         return contasNegativas;
-    }
-    public double sacarDeConta (String numConta, String numAgencia, double valor) {
+    }//funciona
+    public double sacarDeConta (String numConta, String numAgencia, double sacar) {
         double saldoRestante = 0.0;
         for(Conta c : contas){
             String numerCont = c.getNumeroConta();
             String numeroAgencia = c.getNumeroAgencia();
-            if(numerCont.equals(numerCont) && numeroAgencia.equals(numAgencia)) {
-                c.setSaldo(c.getSaldo() - valor);
+            if(numerCont.equals(numConta) && numeroAgencia.equals(numAgencia)) {
+                c.debitar(sacar);
                 saldoRestante = c.getSaldo();
-                break;
             }
         }
         return saldoRestante;
@@ -80,7 +83,7 @@ public class BancoList {
             }
         }
         return saldo;
-    }
+    }//funciona
     public ArrayList<Conta> pesquisarContasDoCliente(String cpf) {
         ArrayList<Conta> contasDoCliente = new ArrayList<Conta>();
         for(Conta c : contas) {
@@ -91,4 +94,5 @@ public class BancoList {
         }
         return contasDoCliente;
     }
+
 }
